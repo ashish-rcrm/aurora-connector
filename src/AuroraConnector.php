@@ -50,7 +50,6 @@ final class AuroraConnector extends MySqlConnector
     {
         
         if (isset($config['isolation_level']) && $config['isolation_level'] === 'off') {
-            info("aurora function called");
             return;
         }
         else{
