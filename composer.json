@@ -1,0 +1,28 @@
+{
+    "name": "ashishrcrm/aurora",
+    "description": "package for aurora connector",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.0",
+        "ext-json": "*",
+        "illuminate/support": "^8.12 || ^9.0",
+        "illuminate/database": "^8.12 || ^9.0",
+        "illuminate/http": "^8.12 || ^9.0",
+        "aws/aws-sdk-php": "^3.208",
+        "psr/log": "^1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ashishrcrm\\Aurora\\" : "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+          "providers": [
+            "Ashishrcrm\\Aurora\\AuroraServiceProvider"
+          ]
+        }
+      }
+}
