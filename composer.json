@@ -3,7 +3,6 @@
     "description": "package for aurora connector",
     "type": "library",
     "license": "MIT",
-    "minimum-stability": "dev",
     "require": {
         "php": ">=7.0",
         "ext-json": "*",
