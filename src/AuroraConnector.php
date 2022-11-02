@@ -17,8 +17,16 @@ final class AuroraConnector extends MySqlConnector
         // configuration, we'll go ahead and establish a regular connection. This
         // is useful for automation tests that bypass the connection process.
         if (! empty($config['password'])) {
-            return parent::createConnection($dsn, $config, $options);
+            
+            $connection = parent::createConnection($dsn, $config, $options);
+
+            // This will check if the request needs to be forwarded to writer in
+            // case the host is a reader
+            $this->configureReadConsistency($connection, $config);
+
+            return $connection;
         }
+
     }
 
     /**
@@ -28,17 +36,25 @@ final class AuroraConnector extends MySqlConnector
      */
     protected function configureIsolationLevel($connection, array $config)
     {
-        
         if (isset($config['isolation_level']) && $config['isolation_level'] === 'off') {
             return;
         }
-        else{
-            $connection->prepare('SET aurora_replica_read_consistency = "session"')->execute();
+
+        $connection->prepare('SET SESSION aurora_read_replica_read_committed = ON')->execute();
+
+        $connection->prepare('SET SESSION TRANSACTION ISOLATION LEVEL read committed')->execute();
+    }
+
+    
+    protected function configureReadConsistency($connection, array $config)
+    {
+        
+        if (isset($config['read_consistency']) && $config['read_consistency'] === 'off') {
+            return;
         }
+        
+        $connection->prepare('SET aurora_replica_read_consistency = "session"')->execute();
 
     }
 
-
-
-    
 }
